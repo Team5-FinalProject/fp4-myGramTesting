@@ -6,6 +6,6 @@ router.post("/register", UserController.register);
 router.post("/login", UserController.login);
 router.use(authentication);
 router.put("/:id", UserController.updateUserById);
-router.delete("/:id", UserController.deleteUserById);
+router.delete("/:id", UserController.deleteUser);
 
 module.exports = router;

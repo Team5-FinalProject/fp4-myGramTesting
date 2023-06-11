@@ -60,7 +60,7 @@ class PhotoController {
       })
       .catch((err) => {
         console.log(err);
-        res.status(500).json(err);
+        res.status(401).json(err);
       });
   }
 
@@ -94,7 +94,7 @@ class PhotoController {
         });
       })
       .catch((err) => {
-        res.status(500).json(err);
+        res.status(401).json(err);
       });
   }
 

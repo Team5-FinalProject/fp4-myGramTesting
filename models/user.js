@@ -29,10 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: {
-          args: true,
-          msg: 'Username already exists'
-        },
+        unique: true,
         validate: {
           notEmpty: {
             msg: "Email cannot be empty",
@@ -45,12 +42,12 @@ module.exports = (sequelize, DataTypes) => {
       username: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
           notEmpty: {
             msg: "Username cannot be empty",
           },
-        },
-        unique: true
+        }
       },
       password: {
         type: DataTypes.STRING,
@@ -102,10 +99,10 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "User",
       hooks: {
-        beforeCreate: (user, opt) => {
+        beforeSave: (user, options) => {
           const hashedPassword = hashPassword(user.password);
           user.password = hashedPassword;
-        },
+        }
       },
     }
   );

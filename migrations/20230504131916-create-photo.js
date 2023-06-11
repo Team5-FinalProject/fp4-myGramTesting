@@ -10,16 +10,34 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Title cannot be empty"
+          }
+        }
       },
       caption: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Caption cannot be empty"
+          }
+        }
       },
       poster_image_url: {
-        type: Sequelize.TEXT
-      },
-      UserId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Poster image URL cannot be empty"
+          },
+          isUrl: {
+            msg: "Invalid URL format"
+          }
+        }
       },
       createdAt: {
         allowNull: false,

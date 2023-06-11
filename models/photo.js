@@ -44,8 +44,7 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Invalid URL format",
           },
         },
-      },
-      UserId: DataTypes.INTEGER,
+      }
     },
     {
       sequelize,

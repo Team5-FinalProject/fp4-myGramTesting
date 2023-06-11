@@ -1,20 +1,11 @@
 const { User } = require("../models");
 const { comparePassword } = require("../helpers/bcrypt");
+const { hashPassword } = require("../helpers/bcrypt");
 const { generateToken } = require("../helpers/jwt");
 
 class UserController {
   static async register(req, res) {
     const { email, full_name, username, password, profile_image_url, age, phone_number } = req.body;
-    const validateEmail = await User.findOne({
-      where: {
-        email
-      }
-    });
-    if (validateEmail) {
-      return res.status(400).json({
-        message: "Email already exists"
-      });
-    }
     User.create({
       email,
       full_name,
@@ -37,10 +28,7 @@ class UserController {
         });
       })
       .catch((err) => {
-        res.status(500).json({
-          message: "Internal server error",
-          err,
-        });
+        res.status(401).json({ message: err.errors[0].message });
       });
   }
 
@@ -90,6 +78,11 @@ class UserController {
         email
       }
     });
+    const validateUsername = await User.findOne({
+      where: {
+        username
+      }
+    });
     if (!validateUser) {
       return res.status(400).json({
         message: "User not found"
@@ -100,11 +93,17 @@ class UserController {
         message: "Email already exists"
       });
     }
+    if (validateUsername) {
+      return res.status(400).json({
+        message: "Username already exists"
+      });
+    }
+    const hashedPassword = hashPassword(password);
     let data = {
       email,
       full_name,
       username,
-      password,
+      hashedPassword,
       profile_image_url,
       age,
       phone_number
@@ -117,14 +116,12 @@ class UserController {
     })
       .then((data) => {
         res.status(200).json({
-          "user": {
             "email": data[1][0].email,
             "full_name": data[1][0].full_name,
             "username": data[1][0].username,
             "profile_image_url": data[1][0].profile_image_url,
             "age": data[1][0].age,
             "phone_number": data[1][0].phone_number
-          }
         });
       })
       .catch((err) => {
@@ -132,18 +129,8 @@ class UserController {
       });
   }
 
-  static async deleteUserById(req, res) {
+  static async deleteUser(req, res) {
     let id = +req.params.id;
-    const validateUser = await User.findOne({
-      where: {
-        id
-      }
-    });
-    if (!validateUser) {
-      return res.status(400).json({
-        message: "User not found"
-      });
-    }
     User.destroy({
       where: {
         id
