@@ -24,7 +24,7 @@ class CommentController {
       });
     } catch (err) {
       console.log(err);
-      res.status(500).json(err);
+      return res.status(400).json(err);
     }
   }
 
@@ -51,7 +51,7 @@ class CommentController {
       });
     } catch (err) {
       console.log(err);
-      res.status(500).json(err);
+      return res.status(500).json(err);
     }
   }
 
@@ -89,7 +89,7 @@ class CommentController {
       });
     } catch (err) {
       console.log(err);
-      res.status(500).json(err);
+      return res.status(401).json(err);
     }
   }
 
