@@ -371,7 +371,7 @@ describe("DELETE /comments/:id", () => {
   });
 
   // Success Testing Delete Comment
-  it("should respond with 200 status code and delete the comment", (done) => {
+  it("should be respond with 200 status code", (done) => {
     request(app)
       .delete(`/comments/${commentId}`)
       .set("token", token)
@@ -380,6 +380,8 @@ describe("DELETE /comments/:id", () => {
           done(err);
         } else {
           expect(res.statusCode).toEqual(200);
+          expect(res.type).toEqual("application/json");
+          expect(res.body).toHaveProperty("message");
           expect(typeof res.body).toEqual("object");
           expect(res.body.message).toEqual(
             "Your comment has been successfully deleted"
@@ -390,7 +392,7 @@ describe("DELETE /comments/:id", () => {
   });
 
   // Fail Testing Delete Comment Because No Token
-  it("should respond with 401 status code and an error message", (done) => {
+  it("should be respond with 401 status code", (done) => {
     request(app)
       .delete(`/comments/${commentId}`)
       .end((err, res) => {
